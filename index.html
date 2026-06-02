@@ -1,481 +1,643 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Programiner | Android Development Studio</title>
+<title>Programiner — Android Development Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --navy: #0a0f1e;
-    --navy-mid: #111827;
-    --navy-light: #1a2540;
-    --platinum: #d4d8e2;
-    --platinum-light: #eef0f5;
-    --gold: #b8973a;
-    --gold-light: #d4af5a;
-    --gold-pale: #f0e4b8;
-    --white: #ffffff;
-    --glass-bg: rgba(255,255,255,0.04);
-    --glass-border: rgba(255,255,255,0.10);
-    --glass-border-gold: rgba(184,151,58,0.35);
-    --text-muted: #7a8499;
-    --card-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3);
-    --gold-glow: 0 0 40px rgba(184,151,58,0.15);
-  }
+:root {
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
-  html { scroll-behavior: smooth; }
+[data-theme="dark"] {
+  --bg:          #000000;
+  --bg-2:        #080808;
+  --bg-3:        #0f0f0f;
+  --bg-card:     #111111;
+  --surface:     rgba(255,255,255,0.042);
+  --surface-h:   rgba(255,255,255,0.072);
+  --border:      rgba(255,255,255,0.075);
+  --border-s:    rgba(255,255,255,0.13);
+  --text-1:      #f5f5f7;
+  --text-2:      #98989d;
+  --text-3:      #5a5a60;
+  --accent:      #0071e3;
+  --accent-2:    #2997ff;
+  --accent-s:    rgba(41,151,255,0.14);
+  --nav-bg:      rgba(0,0,0,0.82);
+  --green:       #34c759;
+  --amber:       #ff9f0a;
+}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--navy);
-    color: var(--platinum-light);
-    overflow-x: hidden;
-  }
+[data-theme="light"] {
+  --bg:          #ffffff;
+  --bg-2:        #fafafa;
+  --bg-3:        #f5f5f7;
+  --bg-card:     #f0f0f2;
+  --surface:     rgba(0,0,0,0.032);
+  --surface-h:   rgba(0,0,0,0.058);
+  --border:      rgba(0,0,0,0.07);
+  --border-s:    rgba(0,0,0,0.13);
+  --text-1:      #1d1d1f;
+  --text-2:      #6e6e73;
+  --text-3:      #aeaeb2;
+  --accent:      #0071e3;
+  --accent-2:    #0066cc;
+  --accent-s:    rgba(0,102,204,0.1);
+  --nav-bg:      rgba(255,255,255,0.82);
+  --green:       #28a745;
+  --amber:       #e68a00;
+}
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 4rem;
-    background: rgba(10,15,30,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--glass-border);
-    transition: all 0.3s;
-  }
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.55rem; font-weight: 600; letter-spacing: 0.04em;
-    color: var(--white); text-decoration: none;
-  }
-  .nav-logo span { color: var(--gold-light); }
-  .nav-links { display: flex; gap: 2.4rem; list-style: none; }
-  .nav-links a {
-    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--text-muted);
-    text-decoration: none; transition: color 0.3s;
-  }
-  .nav-links a:hover { color: var(--gold-light); }
-  .nav-cta {
-    padding: 0.55rem 1.4rem;
-    border: 1px solid var(--gold);
-    border-radius: 2px;
-    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--gold-light); text-decoration: none;
-    transition: all 0.3s;
-  }
-  .nav-cta:hover { background: var(--gold); color: var(--navy); }
+html { scroll-behavior: smooth; }
 
-  /* ── HERO ── */
-  #hero {
-    min-height: 100vh;
-    display: flex; align-items: center;
-    position: relative; overflow: hidden;
-    background: linear-gradient(135deg, #04080f 0%, #0a0f1e 40%, #0d1830 100%);
-  }
-  #hero-canvas {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    z-index: 0; pointer-events: none;
-  }
-  .hero-grid-bg {
-    position: absolute; inset: 0; z-index: 1;
-    background-image:
-      linear-gradient(rgba(184,151,58,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(184,151,58,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-  .hero-radial {
-    position: absolute; inset: 0; z-index: 1;
-    background: radial-gradient(ellipse 70% 70% at 60% 50%, rgba(184,151,58,0.06) 0%, transparent 70%);
-  }
-  .hero-orb {
-    position: absolute; z-index: 1;
-    border-radius: 50%;
-    filter: blur(90px);
-    animation: float 10s ease-in-out infinite;
-  }
-  .hero-orb-1 {
-    width: 520px; height: 520px;
-    background: radial-gradient(circle, rgba(184,151,58,0.10) 0%, transparent 70%);
-    right: -120px; top: -120px;
-    animation-delay: 0s;
-  }
-  .hero-orb-2 {
-    width: 320px; height: 320px;
-    background: radial-gradient(circle, rgba(30,80,180,0.12) 0%, transparent 70%);
-    left: 8%; bottom: 8%;
-    animation-delay: -5s;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-30px) scale(1.05); }
-  }
-  .hero-content {
-    position: relative; z-index: 2; padding-top: 6rem;
-    max-width: 1300px; margin: 0 auto; padding: 0 4rem;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
-  }
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 0.6rem;
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.5rem;
-  }
-  .hero-eyebrow::before {
-    content: ''; width: 32px; height: 1px; background: var(--gold);
-  }
-  .hero-h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 5.5vw, 5.5rem);
-    font-weight: 300; line-height: 1.05;
-    color: var(--white); letter-spacing: -0.01em;
-    margin-bottom: 1.5rem;
-  }
-  .hero-h1 em {
-    font-style: normal;
-    background: linear-gradient(90deg, var(--gold-light), var(--gold-pale));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .hero-sub {
-    font-size: 1rem; font-weight: 300; line-height: 1.8;
-    color: var(--text-muted); max-width: 420px;
-    margin-bottom: 2.5rem;
-  }
-  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary {
-    padding: 0.85rem 2.2rem;
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    border: none; border-radius: 2px;
-    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--navy); text-decoration: none;
-    transition: all 0.3s; cursor: pointer;
-    box-shadow: 0 8px 32px rgba(184,151,58,0.3);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(184,151,58,0.4); }
-  .btn-outline {
-    padding: 0.85rem 2.2rem;
-    background: transparent;
-    border: 1px solid var(--glass-border);
-    border-radius: 2px;
-    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--platinum); text-decoration: none;
-    transition: all 0.3s; cursor: pointer;
-    backdrop-filter: blur(8px);
-  }
-  .btn-outline:hover { border-color: var(--gold); color: var(--gold-light); }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text-1);
+  overflow-x: hidden;
+  transition: background 0.45s var(--ease), color 0.45s var(--ease);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1;
+}
 
-  /* Stats cards on right of hero */
-  .hero-right { display: flex; flex-direction: column; gap: 1.2rem; }
-  .stat-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 4px;
-    padding: 1.5rem 2rem;
-    display: flex; align-items: center; gap: 1.5rem;
-    backdrop-filter: blur(12px);
-    transition: all 0.4s;
-    transform-style: preserve-3d;
-  }
-  .stat-card:hover {
-    border-color: var(--glass-border-gold);
-    transform: translateX(8px) rotateY(-2deg);
-    box-shadow: var(--gold-glow);
-  }
-  .stat-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem; font-weight: 300;
-    color: var(--gold-light); line-height: 1;
-    min-width: 90px;
-  }
-  .stat-label {
-    font-size: 0.82rem; font-weight: 400; color: var(--text-muted); line-height: 1.5;
-  }
-  .stat-label strong { display: block; color: var(--platinum-light); font-weight: 500; margin-bottom: 0.2rem; }
+/* ═══════════════ NAV ═══════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem; height: 50px;
+  background: var(--nav-bg);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.4s, border-color 0.4s;
+}
+.nav-logo {
+  font-size: 1.05rem; font-weight: 600; letter-spacing: -0.025em;
+  color: var(--text-1); text-decoration: none;
+}
+.nav-logo span { color: var(--accent-2); font-weight: 300; }
+.nav-links {
+  display: flex; list-style: none;
+  position: absolute; left: 50%; transform: translateX(-50%);
+}
+.nav-links a {
+  font-size: 0.78rem; font-weight: 400;
+  color: var(--text-2); text-decoration: none;
+  padding: 0 1.1rem; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text-1); }
+.nav-right { display: flex; align-items: center; gap: 1.2rem; }
 
-  /* ── SECTION BASE ── */
-  section { padding: 7rem 0; }
-  .container { max-width: 1300px; margin: 0 auto; padding: 0 4rem; }
-  .section-label {
-    display: inline-flex; align-items: center; gap: 0.6rem;
-    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 1rem;
-  }
-  .section-label::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.2rem, 4vw, 3.5rem);
-    font-weight: 300; color: var(--white);
-    line-height: 1.15; margin-bottom: 1rem;
-  }
-  .section-sub {
-    font-size: 0.95rem; color: var(--text-muted);
-    max-width: 560px; line-height: 1.75;
-  }
-  .section-header { margin-bottom: 4rem; }
+/* theme pill */
+.theme-pill {
+  display: flex; align-items: center; gap: 0;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 980px; padding: 3px; cursor: pointer;
+}
+.theme-opt {
+  padding: 0.28rem 0.65rem; border-radius: 980px;
+  font-size: 0.68rem; font-weight: 500; color: var(--text-3);
+  transition: background 0.25s, color 0.25s;
+  user-select: none; cursor: pointer;
+}
+.theme-opt.active { background: var(--bg-card); color: var(--text-1); }
 
-  /* ── DIVIDER ── */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-    margin: 0 4rem;
-  }
+.nav-cta {
+  padding: 0.4rem 1rem;
+  background: var(--accent); border-radius: 980px;
+  font-size: 0.76rem; font-weight: 400;
+  color: #fff; text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.nav-cta:hover { opacity: 0.85; transform: scale(0.97); }
 
-  /* ── APPS SECTION ── */
-  #apps { background: linear-gradient(180deg, var(--navy) 0%, #070c1a 100%); }
-  .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
-  .app-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 4px;
-    padding: 2.5rem;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    position: relative; overflow: hidden;
-    cursor: pointer;
-  }
-  .app-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0; transition: opacity 0.4s;
-  }
-  .app-card:hover::before { opacity: 1; }
-  .app-card:hover {
-    border-color: var(--glass-border-gold);
-    transform: translateY(-8px) rotateX(2deg);
-    box-shadow: var(--card-shadow), var(--gold-glow);
-  }
-  .app-icon-wrap {
-    width: 56px; height: 56px; border-radius: 12px;
-    background: linear-gradient(135deg, rgba(184,151,58,0.15), rgba(184,151,58,0.05));
-    border: 1px solid var(--glass-border-gold);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem; margin-bottom: 1.5rem;
-    transition: transform 0.4s;
-  }
-  .app-card:hover .app-icon-wrap { transform: scale(1.1) rotateZ(-5deg); }
-  .app-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.45rem; font-weight: 500; color: var(--white);
-    margin-bottom: 0.5rem;
-  }
-  .app-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.8rem; }
-  .app-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
-  .app-rating {
-    display: flex; align-items: center; gap: 0.3rem;
-    font-size: 0.8rem; font-weight: 500; color: var(--gold-light);
-  }
-  .app-version { font-size: 0.75rem; color: var(--text-muted); }
-  .app-playstore {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--gold); text-decoration: none;
-    border-top: 1px solid var(--glass-border); padding-top: 1.2rem; width: 100%;
-    transition: color 0.3s;
-  }
-  .app-playstore:hover { color: var(--gold-light); }
-  .badge-playstore {
-    background: rgba(184,151,58,0.12); border: 1px solid var(--glass-border-gold);
-    padding: 0.2rem 0.6rem; border-radius: 2px;
-    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em;
-    color: var(--gold); text-transform: uppercase;
-  }
+/* ═══════════════ HERO ═══════════════ */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  background: var(--bg);
+  position: relative; overflow: hidden;
+  padding: 7rem 2rem 4rem;
+}
+.hero-glow {
+  position: absolute; pointer-events: none; z-index: 0;
+  width: 900px; height: 600px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -55%);
+  background: radial-gradient(ellipse, rgba(41,151,255,0.07) 0%, transparent 68%);
+  transition: background 0.4s;
+}
+[data-theme="light"] .hero-glow {
+  background: radial-gradient(ellipse, rgba(0,102,204,0.05) 0%, transparent 68%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 780px; }
 
-  /* app count banner */
-  .apps-stats-bar {
-    display: flex; gap: 3rem; align-items: center;
-    padding: 2.5rem 3rem;
-    background: var(--glass-bg); border: 1px solid var(--glass-border);
-    border-radius: 4px; margin-bottom: 4rem;
-  }
-  .apps-stat-item { text-align: center; }
-  .apps-stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.8rem; font-weight: 300; color: var(--gold-light); display: block;
-  }
-  .apps-stat-lbl { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.12em; }
-  .apps-stat-divider { width: 1px; height: 48px; background: var(--glass-border); flex-shrink: 0; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.32rem 0.85rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 980px;
+  font-size: 0.7rem; font-weight: 400; letter-spacing: 0.015em;
+  color: var(--text-2); margin-bottom: 2.2rem;
+  animation: anim-up 0.9s var(--ease) both;
+}
+.badge-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: blink 2.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
 
-  /* ── ABOUT ── */
-  #about {
-    background: linear-gradient(135deg, #070c1a 0%, #0a0f1e 100%);
-    position: relative; overflow: hidden;
-  }
-  .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: center; }
-  .about-img-wrap {
-    position: relative;
-  }
-  .about-img-frame {
-    width: 320px; height: 320px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--glass-bg), rgba(184,151,58,0.08));
-    border: 1px solid var(--glass-border-gold);
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-    box-shadow: var(--gold-glow), 0 0 0 1px var(--glass-border);
-    position: relative; z-index: 1;
-  }
-  .about-img-frame img { width: 100%; height: 100%; object-fit: cover; }
-  .about-img-ring {
-    position: absolute; inset: -20px;
-    border-radius: 50%;
-    border: 1px solid rgba(184,151,58,0.15);
-    animation: ring-pulse 4s ease-in-out infinite;
-  }
-  .about-img-ring-2 {
-    position: absolute; inset: -40px;
-    border-radius: 50%;
-    border: 1px solid rgba(184,151,58,0.07);
-    animation: ring-pulse 4s ease-in-out infinite 1.5s;
-  }
-  @keyframes ring-pulse {
-    0%, 100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.02); }
-  }
-  .about-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.9rem; font-weight: 500; color: var(--gold-light);
-    text-align: center; margin-top: 1.5rem; letter-spacing: 0.1em; text-transform: uppercase;
-  }
-  .about-role { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.3rem; }
-  .about-quote {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem; font-weight: 300; font-style: italic;
-    color: var(--platinum);
-    border-left: 2px solid var(--gold);
-    padding-left: 1.5rem;
-    line-height: 1.7;
-    margin-bottom: 2rem;
-  }
-  .about-body { font-size: 0.95rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 2.5rem; }
-  .skills-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }
-  .skill-pill {
-    padding: 0.35rem 1rem;
-    border: 1px solid var(--glass-border);
-    border-radius: 2px;
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--text-muted); transition: all 0.3s;
-  }
-  .skill-pill:hover { border-color: var(--gold); color: var(--gold-light); }
+.hero-h1 {
+  font-size: clamp(3.2rem, 7.5vw, 6.4rem);
+  font-weight: 200; line-height: 1.03;
+  letter-spacing: -0.045em; color: var(--text-1);
+  margin-bottom: 1.5rem;
+  animation: anim-up 0.9s 0.08s var(--ease) both;
+}
+.hero-h1 b { font-weight: 600; }
+.hero-h1 .grad {
+  background: linear-gradient(125deg, var(--accent-2) 0%, #5ac8fa 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
 
-  /* ── TESTIMONIALS ── */
-  #testimonials { background: var(--navy); }
-  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
-  .testimonial-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 4px; padding: 2rem;
-    transition: all 0.4s;
-    transform-style: preserve-3d;
-  }
-  .testimonial-card:hover {
-    border-color: var(--glass-border-gold);
-    transform: translateY(-4px) rotateX(1deg);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--gold-glow);
-  }
-  .testimonial-stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 1rem; }
-  .testimonial-text { font-size: 0.9rem; color: var(--platinum); line-height: 1.75; margin-bottom: 1.5rem; font-style: italic; }
-  .testimonial-author { display: flex; align-items: center; gap: 0.9rem; }
-  .testimonial-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--glass-border-gold); }
-  .testimonial-name { font-size: 0.85rem; font-weight: 500; color: var(--white); }
-  .testimonial-app { font-size: 0.72rem; color: var(--text-muted); }
+.hero-p {
+  font-size: 1.08rem; font-weight: 300; line-height: 1.72;
+  color: var(--text-2); max-width: 500px; margin: 0 auto 2.5rem;
+  animation: anim-up 0.9s 0.16s var(--ease) both;
+}
 
-  /* ── CONTACT ── */
-  #contact {
-    background: linear-gradient(180deg, var(--navy) 0%, #04080f 100%);
-    position: relative; overflow: hidden;
-  }
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
-  .contact-info-item {
-    display: flex; align-items: center; gap: 1rem;
-    padding: 1.2rem 0; border-bottom: 1px solid var(--glass-border);
-  }
-  .contact-icon {
-    width: 40px; height: 40px;
-    border: 1px solid var(--glass-border-gold); border-radius: 2px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; color: var(--gold); flex-shrink: 0;
-  }
-  .contact-info-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
-  .contact-info-value { font-size: 0.9rem; color: var(--platinum-light); margin-top: 0.2rem; }
-  .social-row { display: flex; gap: 0.8rem; margin-top: 2.5rem; }
-  .social-link {
-    width: 42px; height: 42px;
-    border: 1px solid var(--glass-border); border-radius: 2px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; color: var(--text-muted); text-decoration: none;
-    transition: all 0.3s;
-  }
-  .social-link:hover { border-color: var(--gold); color: var(--gold-light); transform: translateY(-3px); }
-  .form-group { margin-bottom: 1.2rem; }
-  .form-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.12em; display: block; margin-bottom: 0.5rem; }
-  .form-input {
-    width: 100%;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 2px;
-    padding: 0.85rem 1rem;
-    font-size: 0.9rem; color: var(--platinum-light);
-    font-family: 'DM Sans', sans-serif;
-    transition: border-color 0.3s;
-    outline: none;
-  }
-  .form-input:focus { border-color: var(--gold); }
-  .form-input::placeholder { color: var(--text-muted); }
-  textarea.form-input { resize: vertical; min-height: 130px; }
+.hero-btns {
+  display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap;
+  animation: anim-up 0.9s 0.24s var(--ease) both;
+}
+.btn-fill {
+  padding: 0.7rem 1.7rem; background: var(--accent);
+  border-radius: 980px; border: none;
+  font-size: 0.86rem; font-weight: 400; color: #fff;
+  text-decoration: none; cursor: pointer; font-family: inherit;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn-fill:hover { opacity: 0.86; transform: scale(0.97); }
+.btn-ghost {
+  padding: 0.7rem 1.7rem;
+  background: var(--surface); border: 1px solid var(--border-s);
+  border-radius: 980px;
+  font-size: 0.86rem; font-weight: 400; color: var(--text-1);
+  text-decoration: none; cursor: pointer; font-family: inherit;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-ghost:hover { background: var(--surface-h); transform: scale(0.97); }
 
-  /* ── FOOTER ── */
-  footer {
-    padding: 2.5rem 4rem;
-    border-top: 1px solid var(--glass-border);
-    display: flex; align-items: center; justify-content: space-between;
-    font-size: 0.8rem; color: var(--text-muted);
-  }
-  .footer-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem; font-weight: 500; color: var(--white); text-decoration: none;
-  }
-  .footer-logo span { color: var(--gold-light); }
+/* hero stats */
+.hero-stats {
+  display: flex; justify-content: center; gap: 0;
+  margin-top: 4.5rem; padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+  animation: anim-up 0.9s 0.32s var(--ease) both;
+}
+.h-stat { padding: 0 2.8rem; border-right: 1px solid var(--border); text-align: center; }
+.h-stat:last-child { border-right: none; }
+.h-stat-n {
+  font-size: 2rem; font-weight: 300; letter-spacing: -0.04em;
+  color: var(--text-1); line-height: 1; display: block;
+}
+.h-stat-l { font-size: 0.72rem; color: var(--text-3); margin-top: 0.35rem; }
 
-  /* ── 3D perspective layer ── */
-  .perspective-scene { perspective: 1200px; }
+@keyframes anim-up {
+  from { opacity:0; transform: translateY(22px); }
+  to   { opacity:1; transform: none; }
+}
 
-  /* ── SCROLL ANIMATIONS ── */
-  .reveal {
-    opacity: 0; transform: translateY(40px);
-    transition: opacity 0.8s cubic-bezier(0.23,1,0.32,1), transform 0.8s cubic-bezier(0.23,1,0.32,1);
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
-  .reveal-delay-5 { transition-delay: 0.5s; }
+/* ═══════════════ SHARED ═══════════════ */
+section { padding: 6rem 0; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
+.eyebrow {
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent-2);
+  display: block; margin-bottom: 0.85rem;
+}
+.sec-title {
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 300;
+  letter-spacing: -0.03em; color: var(--text-1);
+  line-height: 1.13; margin-bottom: 1rem;
+}
+.sec-sub {
+  font-size: 0.96rem; color: var(--text-2); line-height: 1.75;
+  font-weight: 300; max-width: 500px;
+}
+.sec-head { margin-bottom: 3.5rem; }
+.divider { height: 1px; background: var(--border); margin: 0 2.5rem; }
 
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    .hero-content { grid-template-columns: 1fr; padding: 0 1.5rem; gap: 3rem; padding-top: 6rem; }
-    .hero-right { flex-direction: row; flex-wrap: wrap; }
-    .stat-card { flex: 1; min-width: 140px; }
-    .container { padding: 0 1.5rem; }
-    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-    .apps-stats-bar { flex-wrap: wrap; gap: 1.5rem; }
-    .apps-stat-divider { display: none; }
-    footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
-  }
+/* ═══════════════ APPS ═══════════════ */
+#apps { background: var(--bg-2); }
+
+/* Featured hero card */
+.featured-card {
+  position: relative; overflow: hidden;
+  border-radius: 20px; border: 1px solid var(--border);
+  background: var(--bg-card);
+  margin-bottom: 1.2rem;
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 360px;
+  transition: border-color 0.3s;
+}
+.featured-card:hover { border-color: var(--border-s); }
+
+.featured-card-bg {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(41,151,255,0.055) 0%, transparent 70%);
+  transition: background 0.4s;
+}
+[data-theme="light"] .featured-card-bg {
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(0,102,204,0.04) 0%, transparent 70%);
+}
+
+.featured-left {
+  position: relative; z-index: 1;
+  padding: 3rem 3.5rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.featured-tag {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.25rem 0.7rem;
+  background: var(--accent-s);
+  border-radius: 980px;
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--accent-2);
+  margin-bottom: 1.8rem; width: fit-content;
+}
+
+.featured-app-row { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.2rem; }
+.featured-app-icon {
+  width: 60px; height: 60px; border-radius: 14px;
+  background: var(--surface); border: 1px solid var(--border-s);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.7rem; flex-shrink: 0;
+}
+.featured-app-name {
+  font-size: 1.8rem; font-weight: 500; letter-spacing: -0.03em;
+  color: var(--text-1); line-height: 1;
+}
+.featured-app-cat { font-size: 0.78rem; color: var(--text-3); margin-top: 0.3rem; }
+
+.featured-desc {
+  font-size: 0.92rem; color: var(--text-2); line-height: 1.75;
+  font-weight: 300; margin-bottom: 2rem; max-width: 360px;
+}
+
+.featured-meta { display: flex; align-items: center; gap: 1.5rem; }
+.f-rating { display: flex; align-items: center; gap: 0.35rem; }
+.f-stars { color: #ffd60a; font-size: 0.72rem; letter-spacing: 1px; }
+.f-score { font-size: 0.82rem; font-weight: 500; color: var(--text-1); }
+.f-reviews { font-size: 0.72rem; color: var(--text-3); }
+.featured-cta {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.8rem; font-weight: 500; color: var(--accent-2);
+  text-decoration: none; transition: gap 0.2s;
+}
+.featured-cta:hover { gap: 0.7rem; }
+.featured-cta::after { content: '→'; }
+
+.featured-right {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 2.5rem;
+}
+.featured-mockup {
+  width: 180px; height: 320px;
+  border-radius: 26px;
+  border: 1px solid var(--border-s);
+  background: var(--bg-3);
+  position: relative;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.18);
+  overflow: hidden;
+  transform: perspective(600px) rotateY(-8deg) rotateX(2deg);
+  transition: transform 0.5s var(--ease);
+}
+.featured-card:hover .featured-mockup {
+  transform: perspective(600px) rotateY(-4deg) rotateX(1deg);
+}
+.mockup-bar {
+  width: 60px; height: 4px; border-radius: 2px;
+  background: var(--border-s); margin: 14px auto 0;
+}
+.mockup-screen {
+  margin: 12px 10px 0;
+  height: 250px; border-radius: 14px;
+  background: var(--surface);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  padding: 12px;
+}
+.mockup-row {
+  height: 8px; border-radius: 4px; background: var(--border-s);
+  margin-bottom: 7px; width: 100%;
+}
+.mockup-row.short { width: 60%; }
+.mockup-row.med { width: 80%; }
+.mockup-block {
+  flex: 1; border-radius: 10px; background: var(--border);
+  margin-top: 8px;
+}
+.mockup-icon-center {
+  font-size: 2.8rem; display: flex; align-items: center; justify-content: center;
+  height: 100%;
+}
+
+/* App grid — 3 smaller cards */
+.apps-trio {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem;
+}
+.app-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 2rem;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s var(--ease);
+  cursor: default; position: relative; overflow: hidden;
+}
+.app-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-s), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.app-card:hover { border-color: var(--border-s); transform: translateY(-3px); }
+.app-card:hover::after { opacity: 1; }
+
+.ac-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+.ac-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.35rem; flex-shrink: 0;
+  transition: transform 0.3s var(--ease-spring);
+}
+.app-card:hover .ac-icon { transform: scale(1.1); }
+.ac-name { font-size: 1.05rem; font-weight: 500; letter-spacing: -0.02em; color: var(--text-1); }
+.ac-cat { font-size: 0.72rem; color: var(--text-3); margin-top: 0.15rem; }
+
+.ac-desc { font-size: 0.84rem; color: var(--text-2); line-height: 1.7; font-weight: 300; margin-bottom: 1.5rem; }
+
+.ac-foot { display: flex; align-items: center; justify-content: space-between; }
+.ac-stars { color: #ffd60a; font-size: 0.7rem; letter-spacing: 1px; }
+.ac-rating { font-size: 0.75rem; color: var(--text-3); margin-top: 0.1rem; }
+.ac-link {
+  font-size: 0.75rem; font-weight: 500; color: var(--accent-2);
+  text-decoration: none; transition: opacity 0.2s;
+}
+.ac-link:hover { opacity: 0.7; }
+
+/* ═══════════════ ABOUT ═══════════════ */
+#about { background: var(--bg); }
+
+.about-wrap {
+  display: grid; grid-template-columns: 380px 1fr; gap: 5rem; align-items: start;
+}
+
+/* Left column — portrait + identity card */
+.about-portrait-col { position: sticky; top: 80px; }
+
+.portrait-card {
+  border-radius: 20px; overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+}
+.portrait-img-wrap {
+  width: 100%; aspect-ratio: 4/4.5; overflow: hidden; position: relative;
+  background: var(--bg-3);
+}
+.portrait-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(12%);
+  transition: transform 0.5s var(--ease), filter 0.5s;
+}
+.portrait-card:hover .portrait-img-wrap img {
+  transform: scale(1.03); filter: grayscale(0%);
+}
+.portrait-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+}
+[data-theme="light"] .portrait-overlay {
+  background: linear-gradient(to top, rgba(0,0,0,0.2) 0%, transparent 50%);
+}
+.portrait-name-float {
+  position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem;
+}
+.portrait-name {
+  font-size: 1.2rem; font-weight: 600; letter-spacing: -0.02em; color: #fff;
+}
+.portrait-role { font-size: 0.76rem; color: rgba(255,255,255,0.65); margin-top: 0.15rem; }
+
+.portrait-meta {
+  padding: 1.2rem 1.4rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--border);
+}
+.p-meta-item {
+  background: var(--bg-card); padding: 0.8rem 0.9rem;
+}
+.p-meta-n {
+  font-size: 1.3rem; font-weight: 300; letter-spacing: -0.035em; color: var(--text-1);
+}
+.p-meta-l { font-size: 0.68rem; color: var(--text-3); margin-top: 0.15rem; }
+
+/* contact quick row */
+.portrait-links {
+  padding: 1rem 1.4rem;
+  display: flex; gap: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+.p-link {
+  flex: 1; padding: 0.55rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; text-align: center;
+  font-size: 0.68rem; color: var(--text-2);
+  text-decoration: none; transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.p-link:hover { background: var(--surface-h); border-color: var(--accent); color: var(--accent-2); }
+
+/* Right column */
+.about-right { padding-top: 0.5rem; }
+
+.about-section-head { margin-bottom: 2.5rem; }
+
+.about-quote-block {
+  padding: 2rem 2rem 2rem 2.2rem;
+  border-left: 2px solid var(--accent-2);
+  background: var(--surface);
+  border-radius: 0 14px 14px 0;
+  margin-bottom: 2.5rem;
+}
+.about-quote-text {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.08rem; font-weight: 400; font-style: italic;
+  color: var(--text-1); line-height: 1.75;
+}
+.about-quote-attr {
+  font-size: 0.75rem; color: var(--text-3);
+  margin-top: 0.8rem; font-style: normal; font-family: 'Outfit', sans-serif;
+}
+
+.about-body-text {
+  font-size: 0.93rem; color: var(--text-2); line-height: 1.85; font-weight: 300;
+  margin-bottom: 2.5rem;
+}
+
+/* Timeline */
+.timeline { margin-bottom: 2.5rem; }
+.tl-head {
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-3); margin-bottom: 1.2rem;
+}
+.tl-item {
+  display: flex; gap: 1.2rem; margin-bottom: 1.2rem; align-items: flex-start;
+}
+.tl-dot-col { display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+.tl-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent-2); flex-shrink: 0;
+}
+.tl-line { width: 1px; flex: 1; background: var(--border); min-height: 24px; margin-top: 4px; }
+.tl-item:last-child .tl-line { display: none; }
+.tl-year { font-size: 0.72rem; color: var(--text-3); min-width: 36px; padding-top: 2px; }
+.tl-event { font-size: 0.88rem; color: var(--text-1); font-weight: 400; line-height: 1.4; }
+.tl-sub { font-size: 0.76rem; color: var(--text-3); margin-top: 0.2rem; font-weight: 300; }
+
+/* Tech stack */
+.stack-head {
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-3); margin-bottom: 1rem;
+}
+.stack-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
+.stack-pill {
+  display: flex; align-items: center; gap: 0.45rem;
+  padding: 0.38rem 0.9rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 980px;
+  font-size: 0.75rem; color: var(--text-2); font-weight: 400;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.stack-pill:hover { background: var(--accent-s); border-color: var(--accent); color: var(--accent-2); }
+.stack-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-2); }
+
+/* ═══════════════ TESTIMONIALS ═══════════════ */
+#testimonials { background: var(--bg-2); }
+
+.testi-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2px;
+  background: var(--border);
+  border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+}
+.testi-card {
+  background: var(--bg-card); padding: 1.8rem;
+  transition: background 0.3s;
+}
+.testi-card:hover { background: var(--bg-3); }
+.t-stars { color: #ffd60a; font-size: 0.68rem; letter-spacing: 2px; margin-bottom: 1rem; }
+.t-text { font-size: 0.84rem; color: var(--text-2); line-height: 1.72; font-weight: 300; margin-bottom: 1.4rem; font-style: italic; }
+.t-name { font-size: 0.8rem; font-weight: 500; color: var(--text-1); }
+.t-app { font-size: 0.7rem; color: var(--text-3); margin-top: 0.12rem; }
+
+/* ═══════════════ CONTACT ═══════════════ */
+#contact { background: var(--bg); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+
+.c-detail {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.1rem 0; border-bottom: 1px solid var(--border);
+}
+.c-detail:first-of-type { border-top: 1px solid var(--border); }
+.c-icon {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; flex-shrink: 0;
+}
+.c-lbl { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); }
+.c-val { font-size: 0.88rem; color: var(--text-1); margin-top: 0.15rem; font-weight: 300; }
+
+.socials { display: flex; gap: 0.5rem; margin-top: 1.8rem; }
+.soc-btn {
+  width: 34px; height: 34px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.82rem; color: var(--text-2); text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.soc-btn:hover { background: var(--accent-s); border-color: var(--accent); color: var(--accent-2); transform: translateY(-2px); }
+
+.form-field { margin-bottom: 0.9rem; }
+.form-lbl { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); display: block; margin-bottom: 0.42rem; }
+.form-inp {
+  width: 100%; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.72rem 1rem;
+  font-size: 0.88rem; color: var(--text-1);
+  font-family: inherit; font-weight: 300;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.form-inp::placeholder { color: var(--text-3); }
+.form-inp:focus { border-color: var(--accent); background: var(--surface-h); }
+textarea.form-inp { resize: vertical; min-height: 110px; }
+
+/* ═══════════════ FOOTER ═══════════════ */
+footer {
+  padding: 1.8rem 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo { font-size: 0.95rem; font-weight: 600; color: var(--text-1); text-decoration: none; }
+.footer-logo span { color: var(--accent-2); font-weight: 300; }
+.footer-copy { font-size: 0.75rem; color: var(--text-3); }
+
+/* ═══════════════ SCROLL REVEAL ═══════════════ */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+.reveal.in { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.07s; }
+.d2 { transition-delay: 0.14s; }
+.d3 { transition-delay: 0.21s; }
+.d4 { transition-delay: 0.28s; }
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media (max-width: 960px) {
+  nav { padding: 0 1.2rem; }
+  .nav-links { display: none; }
+  .container { padding: 0 1.2rem; }
+  .featured-card { grid-template-columns: 1fr; min-height: auto; }
+  .featured-right { display: none; }
+  .apps-trio { grid-template-columns: 1fr; }
+  .about-wrap { grid-template-columns: 1fr; gap: 3rem; }
+  .about-portrait-col { position: static; }
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .testi-grid { grid-template-columns: 1fr 1fr; }
+  .h-stat { padding: 0 1.5rem; }
+  footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem 1.2rem; }
+  .divider { margin: 0 1.2rem; }
+}
+@media (max-width: 600px) {
+  .testi-grid { grid-template-columns: 1fr; }
+  .hero-stats { flex-wrap: wrap; gap: 1rem; padding-top: 1.5rem; margin-top: 2.5rem; }
+  .h-stat { border-right: none; flex: 1; min-width: 120px; }
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="mainNav">
   <a href="#hero" class="nav-logo">Program<span>iner</span></a>
   <ul class="nav-links">
     <li><a href="#hero">Home</a></li>
@@ -483,129 +645,144 @@
     <li><a href="#about">Studio</a></li>
     <li><a href="#testimonials">Reviews</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Start a Project</a>
+  <div class="nav-right">
+    <div class="theme-pill" id="themePill">
+      <div class="theme-opt" id="optDark" onclick="setTheme('dark')">Dark</div>
+      <div class="theme-opt" id="optLight" onclick="setTheme('light')">Light</div>
+    </div>
+    <a href="#contact" class="nav-cta">Get in touch</a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <canvas id="hero-canvas"></canvas>
-  <div class="hero-grid-bg"></div>
-  <div class="hero-radial"></div>
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-glow"></div>
   <div class="hero-content">
-    <div>
-      <div class="hero-eyebrow">Android Development Studio</div>
-      <h1 class="hero-h1">We Build <em>Remarkable</em><br>Android Apps</h1>
-      <p class="hero-sub">Programiner is a professional Android development studio crafting high-performance, user-centric mobile applications for forward-thinking clients worldwide.</p>
-      <div class="hero-btns">
-        <a href="#apps" class="btn-primary">View Our Portfolio</a>
-        <a href="#contact" class="btn-outline">Start a Project</a>
-      </div>
+    <div class="hero-badge"><span class="badge-dot"></span> Open for new projects · Jammu, India</div>
+    <h1 class="hero-h1">We craft <b><span class="grad">remarkable</span></b><br>Android experiences.</h1>
+    <p class="hero-p">Programiner is a professional Android studio building high-performance, user-centric applications for forward-thinking clients worldwide.</p>
+    <div class="hero-btns">
+      <a href="#apps" class="btn-fill">View Portfolio</a>
+      <a href="#contact" class="btn-ghost">Start a Project</a>
     </div>
-    <div class="hero-right perspective-scene">
-      <div class="stat-card">
-        <div class="stat-number">6+</div>
-        <div class="stat-label">
-          <strong>Years of Experience</strong>
-          Professional Android development since 2019
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">20+</div>
-        <div class="stat-label">
-          <strong>Applications Built</strong>
-          Across diverse domains and industries
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">5</div>
-        <div class="stat-label">
-          <strong>Live on Google Play</strong>
-          Production apps with active users
-        </div>
-      </div>
+    <div class="hero-stats">
+      <div class="h-stat"><span class="h-stat-n">6+</span><div class="h-stat-l">Years Active</div></div>
+      <div class="h-stat"><span class="h-stat-n">20+</span><div class="h-stat-l">Apps Built</div></div>
+      <div class="h-stat"><span class="h-stat-n">5</span><div class="h-stat-l">On Play Store</div></div>
+      <div class="h-stat"><span class="h-stat-n">4.9★</span><div class="h-stat-l">Avg. Rating</div></div>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- APPS -->
+<!-- ═══ APPS ═══ -->
 <section id="apps">
   <div class="container">
-    <div class="section-header reveal">
-      <div class="section-label">Portfolio</div>
-      <h2 class="section-title">Featured Applications</h2>
-      <p class="section-sub">A curated selection of our most impactful projects — each built with precision, performance, and the end user in mind.</p>
+    <div class="sec-head reveal">
+      <span class="eyebrow">Portfolio</span>
+      <h2 class="sec-title">Featured Applications</h2>
+      <p class="sec-sub">A curated selection of our most impactful work — precision-built for real users.</p>
     </div>
 
-    <div class="apps-stats-bar reveal">
-      <div class="apps-stat-item">
-        <span class="apps-stat-num">20+</span>
-        <span class="apps-stat-lbl">Total Apps Built</span>
+    <!-- Featured hero card -->
+    <div class="featured-card reveal">
+      <div class="featured-card-bg"></div>
+
+      <div class="featured-left">
+        <div>
+          <div class="featured-tag">✦ Featured App</div>
+          <div class="featured-app-row">
+            <div class="featured-app-icon">📄</div>
+            <div>
+              <div class="featured-app-name">PDF Dekho</div>
+              <div class="featured-app-cat">Productivity · File Management</div>
+            </div>
+          </div>
+          <p class="featured-desc">A feature-rich PDF viewer with advanced file management. Rename, delete, organize in folders — and invert colours for comfortable night reading. Fast, clean, and thoroughly thought out.</p>
+        </div>
+        <div>
+          <div class="featured-meta">
+            <div class="f-rating">
+              <span class="f-stars">★★★★★</span>
+              <span class="f-score">4.9</span>
+              <span class="f-reviews">· Google Play</span>
+            </div>
+          </div>
+          <div style="margin-top:1.2rem;">
+            <a href="https://programiner.github.io/pdfdekho/app.html" class="featured-cta" target="_blank">View App Details</a>
+          </div>
+        </div>
       </div>
-      <div class="apps-stat-divider"></div>
-      <div class="apps-stat-item">
-        <span class="apps-stat-num">5</span>
-        <span class="apps-stat-lbl">On Google Play</span>
-      </div>
-      <div class="apps-stat-divider"></div>
-      <div class="apps-stat-item">
-        <span class="apps-stat-num">6+</span>
-        <span class="apps-stat-lbl">Years Active</span>
-      </div>
-      <div class="apps-stat-divider"></div>
-      <div class="apps-stat-item">
-        <span class="apps-stat-num">4.9★</span>
-        <span class="apps-stat-lbl">Average Rating</span>
+
+      <div class="featured-right">
+        <div class="featured-mockup">
+          <div class="mockup-bar"></div>
+          <div class="mockup-screen">
+            <div class="mockup-icon-center">📄</div>
+            <div class="mockup-row"></div>
+            <div class="mockup-row med"></div>
+            <div class="mockup-row short"></div>
+            <div class="mockup-block"></div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="apps-grid perspective-scene">
-      <div class="app-card reveal reveal-delay-1">
-        <div class="app-icon-wrap">📄</div>
-        <div class="app-name">PDF Dekho</div>
-        <div class="app-desc">A feature-rich PDF viewer with advanced file management — rename, delete, organize in folders, and invert colors for night reading.</div>
-        <div class="app-meta">
-          <div class="app-rating">★★★★★ 4.9</div>
-          <div class="app-version">v1.8</div>
-          <span class="badge-playstore">Play Store</span>
+    <!-- Trio grid -->
+    <div class="apps-trio">
+      <div class="app-card reveal d1">
+        <div class="ac-top">
+          <div class="ac-icon">🎬</div>
+          <div>
+            <div class="ac-name">VidGyan</div>
+            <div class="ac-cat">Creator Tools · YouTube API</div>
+          </div>
         </div>
-        <a href="https://programiner.github.io/pdfdekho/app.html" class="app-playstore" target="_blank">View App Details →</a>
+        <p class="ac-desc">Curate and analyze YouTube data effortlessly. Built for content creators and researchers who need tag analysis, channel insights, and more — all in one place.</p>
+        <div class="ac-foot">
+          <div>
+            <div class="ac-stars">★★★★★</div>
+            <div class="ac-rating">5.0 · Play Store</div>
+          </div>
+          <a href="https://programiner.github.io/vidgyan/app.html" class="ac-link" target="_blank">View →</a>
+        </div>
       </div>
-      <div class="app-card reveal reveal-delay-2">
-        <div class="app-icon-wrap">🎬</div>
-        <div class="app-name">VidGyan</div>
-        <div class="app-desc">Curate and analyze YouTube data effortlessly, powered by the YouTube Data API for content creators and researchers.</div>
-        <div class="app-meta">
-          <div class="app-rating">★★★★★ 5.0</div>
-          <div class="app-version">v1.3</div>
-          <span class="badge-playstore">Play Store</span>
+
+      <div class="app-card reveal d2">
+        <div class="ac-top">
+          <div class="ac-icon">🔍</div>
+          <div>
+            <div class="ac-name">Detecton</div>
+            <div class="ac-cat">Utility · QR & Barcode</div>
+          </div>
         </div>
-        <a href="https://programiner.github.io/vidgyan/app.html" class="app-playstore" target="_blank">View App Details →</a>
+        <p class="ac-desc">A smart scanner supporting WiFi credentials, contact cards, URLs and more. Instant results, a clean interface, and zero bloat. Scan anything, anywhere.</p>
+        <div class="ac-foot">
+          <div>
+            <div class="ac-stars">★★★★★</div>
+            <div class="ac-rating">5.0 · Play Store</div>
+          </div>
+          <a href="https://programiner.github.io/detecton/app.html" class="ac-link" target="_blank">View →</a>
+        </div>
       </div>
-      <div class="app-card reveal reveal-delay-3">
-        <div class="app-icon-wrap">🔍</div>
-        <div class="app-name">Detecton</div>
-        <div class="app-desc">A smart QR & Barcode Scanner supporting WiFi credentials, contact cards, URLs and more — instant and reliable.</div>
-        <div class="app-meta">
-          <div class="app-rating">★★★★★ 5.0</div>
-          <div class="app-version">v1.0</div>
-          <span class="badge-playstore">Play Store</span>
+
+      <div class="app-card reveal d3">
+        <div class="ac-top">
+          <div class="ac-icon">🏔️</div>
+          <div>
+            <div class="ac-name">Poonch Tourism</div>
+            <div class="ac-cat">Travel · Local Discovery</div>
+          </div>
         </div>
-        <a href="https://programiner.github.io/detecton/app.html" class="app-playstore" target="_blank">View App Details →</a>
-      </div>
-      <div class="app-card reveal reveal-delay-4" style="border-color: rgba(34,139,74,0.25);">
-        <div class="app-icon-wrap" style="background: linear-gradient(135deg, rgba(34,139,74,0.15), rgba(34,139,74,0.05)); border-color: rgba(34,139,74,0.35);">🏔️</div>
-        <div class="app-name">Poonch Tourism</div>
-        <div class="app-desc">Your pocket guide to the hidden gem of J&K — discover 50+ tourist spots, ancient forts, serene lakes, and local experiences across Poonch district.</div>
-        <div class="app-meta">
-          <div class="app-rating" style="color: #4caf7d;">★★★★★ 4.8</div>
-          <div class="app-version">Free</div>
-          <span class="badge-playstore" style="color:#4caf7d; background: rgba(34,139,74,0.12); border-color: rgba(34,139,74,0.35);">Play Store</span>
+        <p class="ac-desc">Your pocket guide to J&K's hidden gem. Discover 50+ tourist spots, ancient forts, serene lakes, and authentic local experiences across Poonch district.</p>
+        <div class="ac-foot">
+          <div>
+            <div class="ac-stars">★★★★★</div>
+            <div class="ac-rating">4.8 · Play Store</div>
+          </div>
+          <a href="https://programiner.github.io/poonchtourismweb/" class="ac-link" target="_blank">View →</a>
         </div>
-        <a href="https://programiner.github.io/poonchtourismweb/" class="app-playstore" style="color: #4caf7d;" target="_blank">View App Details →</a>
       </div>
     </div>
   </div>
@@ -613,40 +790,104 @@
 
 <div class="divider"></div>
 
-<!-- ABOUT -->
+<!-- ═══ ABOUT ═══ -->
 <section id="about">
   <div class="container">
-    <div class="about-grid">
-      <div class="reveal" style="display:flex; flex-direction:column; align-items:center;">
-        <div style="position:relative; display:inline-block;">
-          <div class="about-img-ring"></div>
-          <div class="about-img-ring-2"></div>
-          <div class="about-img-frame">
-            <img src="https://avatars.githubusercontent.com/u/81894524?v=4" alt="Ajaz Ahmed">
+    <div class="about-wrap">
+
+      <!-- Sticky portrait column -->
+      <div class="about-portrait-col reveal">
+        <div class="portrait-card">
+          <div class="portrait-img-wrap">
+            <img src="https://avatars.githubusercontent.com/u/81894524?v=4" alt="Ajaz Ahmed — Founder, Programiner">
+            <div class="portrait-overlay"></div>
+            <div class="portrait-name-float">
+              <div class="portrait-name">Ajaz Ahmed</div>
+              <div class="portrait-role">Founder & Lead Developer</div>
+            </div>
+          </div>
+          <div class="portrait-meta">
+            <div class="p-meta-item">
+              <div class="p-meta-n">6+</div>
+              <div class="p-meta-l">Years experience</div>
+            </div>
+            <div class="p-meta-item">
+              <div class="p-meta-n">20+</div>
+              <div class="p-meta-l">Apps delivered</div>
+            </div>
+            <div class="p-meta-item">
+              <div class="p-meta-n">5</div>
+              <div class="p-meta-l">Live on Play Store</div>
+            </div>
+            <div class="p-meta-item">
+              <div class="p-meta-n">4.9★</div>
+              <div class="p-meta-l">Avg. rating</div>
+            </div>
+          </div>
+          <div class="portrait-links">
+            <a href="https://www.linkedin.com/in/ajaz-ahmed-0b2157262/" class="p-link" target="_blank">LinkedIn</a>
+            <a href="https://github.com/programiner" class="p-link" target="_blank">GitHub</a>
+            <a href="https://programiner.github.io/portfolio/ajaz.html" class="p-link" target="_blank">Portfolio</a>
           </div>
         </div>
-        <div class="about-name">Ajaz Ahmed</div>
-        <div class="about-role">Founder & Lead Android Developer</div>
       </div>
-      <div>
-        <div class="section-label reveal">About the Studio</div>
-        <h2 class="section-title reveal">Built on Expertise,<br>Driven by Purpose</h2>
-        <blockquote class="about-quote reveal">
-          "Experienced Android developer specialising in Java. Passionate about building user-friendly apps. Always learning and adapting to new technologies."
-        </blockquote>
-        <p class="about-body reveal">
-          Programiner is a professional Android development studio based in Jammu, India. Over 6 years, we have delivered 20+ applications spanning productivity, utilities, and data tools. Our philosophy is simple: clean architecture, intuitive design, and relentless improvement. We partner closely with clients to transform ideas into polished, production-ready products.
-        </p>
-        <div class="skills-row reveal">
-          <span class="skill-pill">Android</span>
-          <span class="skill-pill">Java</span>
-          <span class="skill-pill">Kotlin</span>
-          <span class="skill-pill">Firebase</span>
-          <span class="skill-pill">UI/UX</span>
-          <span class="skill-pill">API Integration</span>
-          <span class="skill-pill">Google Play</span>
+
+      <!-- Right — story column -->
+      <div class="about-right">
+        <div class="about-section-head reveal">
+          <span class="eyebrow">About the Studio</span>
+          <h2 class="sec-title">Built on expertise,<br>driven by purpose.</h2>
         </div>
-        <a href="https://programiner.github.io/portfolio/ajaz.html" class="btn-primary reveal">Full Portfolio →</a>
+
+        <div class="about-quote-block reveal">
+          <p class="about-quote-text">"Experienced Android developer specialising in Java. Passionate about building user-friendly apps. Always learning and adapting to new technologies."</p>
+          <div class="about-quote-attr">— Ajaz Ahmed, Founder & Lead Developer</div>
+        </div>
+
+        <p class="about-body-text reveal">Programiner is a professional Android development studio based in Jammu, India. Since 2019, we've delivered 20+ applications spanning productivity, utilities, travel, and data tools. Our philosophy is simple: clean architecture, intuitive design, and relentless refinement. We partner closely with clients to transform ideas into polished, production-ready products people love to use.</p>
+
+        <!-- Timeline -->
+        <div class="timeline reveal">
+          <div class="tl-head">Journey</div>
+          <div class="tl-item">
+            <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-year">2019</div>
+            <div><div class="tl-event">Founded Programiner</div><div class="tl-sub">Started building Android apps professionally in Java</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-year">2021</div>
+            <div><div class="tl-event">First 10 apps shipped</div><div class="tl-sub">Expanded into productivity and utility categories</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-year">2023</div>
+            <div><div class="tl-event">PDF Dekho launched</div><div class="tl-sub">Flagship app reached 4.9★ on Google Play</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-year">2025</div>
+            <div><div class="tl-event">20+ apps · 5 live on Play Store</div><div class="tl-sub">Studio open for new partnerships and client projects</div></div>
+          </div>
+        </div>
+
+        <!-- Stack -->
+        <div class="reveal">
+          <div class="stack-head">Technology Stack</div>
+          <div class="stack-grid">
+            <span class="stack-pill"><span class="stack-dot"></span>Android SDK</span>
+            <span class="stack-pill"><span class="stack-dot"></span>Java</span>
+            <span class="stack-pill"><span class="stack-dot"></span>Kotlin</span>
+            <span class="stack-pill"><span class="stack-dot"></span>Firebase</span>
+            <span class="stack-pill"><span class="stack-dot"></span>Room DB</span>
+            <span class="stack-pill"><span class="stack-dot"></span>Retrofit</span>
+            <span class="stack-pill"><span class="stack-dot"></span>Material Design</span>
+            <span class="stack-pill"><span class="stack-dot"></span>Google Play</span>
+            <span class="stack-pill"><span class="stack-dot"></span>API Integration</span>
+          </div>
+        </div>
+
+        <a href="https://programiner.github.io/portfolio/ajaz.html" class="btn-fill reveal" target="_blank" style="display:inline-block;">Full Portfolio</a>
       </div>
     </div>
   </div>
@@ -657,54 +898,34 @@
 <!-- TESTIMONIALS -->
 <section id="testimonials">
   <div class="container">
-    <div class="section-header reveal">
-      <div class="section-label">Client Reviews</div>
-      <h2 class="section-title">What Our Users Say</h2>
-      <p class="section-sub">Real feedback from users across our Play Store applications.</p>
+    <div class="sec-head reveal">
+      <span class="eyebrow">Reviews</span>
+      <h2 class="sec-title">What users are saying.</h2>
     </div>
-    <div class="testimonials-grid perspective-scene">
-      <div class="testimonial-card reveal reveal-delay-1">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"PDF Dekho is an amazing app for viewing and making PDFs, with an amazing UI. The invert colour feature is absolutely brilliant. Highly recommend!"</p>
-        <div class="testimonial-author">
-          <div>
-            <div class="testimonial-name">Anand Sharma</div>
-            <div class="testimonial-app">PDF Dekho User</div>
-          </div>
-        </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal d1">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"PDF Dekho is amazing for viewing and managing PDFs. The invert colour feature is absolutely brilliant."</p>
+        <div class="t-name">Anand Sharma</div>
+        <div class="t-app">PDF Dekho</div>
       </div>
-      <div class="testimonial-card reveal reveal-delay-2">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"I stumbled upon this app and can't express how impressed I am. As a content creator, finding the right tags used to be time-consuming — this app made it effortless."</p>
-        <div class="testimonial-author">
-          <img class="testimonial-avatar" src="https://play-lh.googleusercontent.com/a/ACg8ocKWKrdULsn7wndtyZx1z551nq2R_93bsoszLMRJEVlNctIqgA=s64-rw-mo" alt="Sarfarz Ahmed">
-          <div>
-            <div class="testimonial-name">Sarfarz Ahmed</div>
-            <div class="testimonial-app">VidGyan User</div>
-          </div>
-        </div>
+      <div class="testi-card reveal d2">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"As a content creator, finding the right tags was time-consuming. This app made it effortless."</p>
+        <div class="t-name">Sarfarz Ahmed</div>
+        <div class="t-app">VidGyan</div>
       </div>
-      <div class="testimonial-card reveal reveal-delay-3">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"Easy interface and smooth experience. The app works flawlessly. Looking forward to more features in the next update."</p>
-        <div class="testimonial-author">
-          <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/men/61.jpg" alt="Shujaat Ali">
-          <div>
-            <div class="testimonial-name">Shujaat Ali</div>
-            <div class="testimonial-app">PDF Dekho User</div>
-          </div>
-        </div>
+      <div class="testi-card reveal d3">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"Easy interface and smooth experience. Works flawlessly. Looking forward to more features."</p>
+        <div class="t-name">Shujaat Ali</div>
+        <div class="t-app">PDF Dekho</div>
       </div>
-      <div class="testimonial-card reveal reveal-delay-4">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"I liked its UI design so much! Clean, modern and well thought-out. The scanner is fast and accurate every time."</p>
-        <div class="testimonial-author">
-          <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,rgba(184,151,58,0.3),rgba(184,151,58,0.1));border:1px solid var(--glass-border-gold);display:flex;align-items:center;justify-content:center;font-size:0.9rem;color:var(--gold-light);">A</div>
-          <div>
-            <div class="testimonial-name">Ajaz Ahmed</div>
-            <div class="testimonial-app">Detecton User</div>
-          </div>
-        </div>
+      <div class="testi-card reveal d4">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"I loved the UI design! Clean, modern and well thought-out. The scanner is fast every single time."</p>
+        <div class="t-name">Ajaz Ahmed</div>
+        <div class="t-app">Detecton</div>
       </div>
     </div>
   </div>
@@ -715,53 +936,44 @@
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
-    <div class="section-header reveal">
-      <div class="section-label">Get In Touch</div>
-      <h2 class="section-title">Let's Build Something<br>Exceptional Together</h2>
+    <div class="sec-head reveal">
+      <span class="eyebrow">Contact</span>
+      <h2 class="sec-title">Let's build something<br>exceptional together.</h2>
     </div>
     <div class="contact-grid">
       <div class="reveal">
-        <div class="contact-info-item">
-          <div class="contact-icon">✉</div>
-          <div>
-            <div class="contact-info-label">Email</div>
-            <div class="contact-info-value">teamprograminer@gmail.com</div>
-          </div>
+        <div class="c-detail">
+          <div class="c-icon">✉</div>
+          <div><div class="c-lbl">Email</div><div class="c-val">teamprograminer@gmail.com</div></div>
         </div>
-        <div class="contact-info-item">
-          <div class="contact-icon">📍</div>
-          <div>
-            <div class="contact-info-label">Location</div>
-            <div class="contact-info-value">Jammu, India</div>
-          </div>
+        <div class="c-detail">
+          <div class="c-icon">📍</div>
+          <div><div class="c-lbl">Location</div><div class="c-val">Jammu, India</div></div>
         </div>
-        <div class="contact-info-item">
-          <div class="contact-icon">⏱</div>
-          <div>
-            <div class="contact-info-label">Response Time</div>
-            <div class="contact-info-value">Within 24 hours</div>
-          </div>
+        <div class="c-detail">
+          <div class="c-icon">⏱</div>
+          <div><div class="c-lbl">Response Time</div><div class="c-val">Within 24 hours</div></div>
         </div>
-        <div class="social-row">
-          <a href="https://www.instagram.com/programiner_/" class="social-link" target="_blank" title="Instagram">📸</a>
-          <a href="https://x.com/teamprograminer" class="social-link" target="_blank" title="X / Twitter">𝕏</a>
-          <a href="https://www.linkedin.com/in/ajaz-ahmed-0b2157262/" class="social-link" target="_blank" title="LinkedIn">in</a>
+        <div class="socials">
+          <a href="https://www.instagram.com/programiner_/" class="soc-btn" target="_blank" title="Instagram">📸</a>
+          <a href="https://x.com/teamprograminer" class="soc-btn" target="_blank" title="X">𝕏</a>
+          <a href="https://www.linkedin.com/in/ajaz-ahmed-0b2157262/" class="soc-btn" target="_blank" title="LinkedIn">in</a>
         </div>
       </div>
-      <div class="reveal">
-        <div class="form-group">
-          <label class="form-label">Full Name</label>
-          <input type="text" class="form-input" placeholder="Your full name">
+      <div class="reveal d1">
+        <div class="form-field">
+          <label class="form-lbl">Full Name</label>
+          <input type="text" class="form-inp" placeholder="Your name">
         </div>
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input type="email" class="form-input" placeholder="your@email.com">
+        <div class="form-field">
+          <label class="form-lbl">Email</label>
+          <input type="email" class="form-inp" placeholder="your@email.com">
         </div>
-        <div class="form-group">
-          <label class="form-label">Message</label>
-          <textarea class="form-input" placeholder="Tell us about your project..."></textarea>
+        <div class="form-field">
+          <label class="form-lbl">Message</label>
+          <textarea class="form-inp" placeholder="Tell us about your project…"></textarea>
         </div>
-        <button class="btn-primary" style="width:100%;border:none;cursor:pointer;">Send Message →</button>
+        <button class="btn-fill" style="width:100%;border:none;cursor:pointer;">Send Message</button>
       </div>
     </div>
   </div>
@@ -770,169 +982,44 @@
 <!-- FOOTER -->
 <footer>
   <a href="#hero" class="footer-logo">Program<span>iner</span></a>
-  <span>Made with ❤️ by Programiner</span>
+  <span class="footer-copy">Made with ❤️ by Programiner</span>
 </footer>
 
 <script>
-  // ── HERO CANVAS ANIMATION ──
-  const canvas = document.getElementById('hero-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [], mouse = { x: -999, y: -999 };
+  // ── THEME ──
+  const html = document.documentElement;
 
-  function resize() {
-    W = canvas.width = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-  }
-  resize();
-  window.addEventListener('resize', () => { resize(); initParticles(); });
-
-  function rand(min, max) { return Math.random() * (max - min) + min; }
-
-  class Particle {
-    constructor() { this.reset(); }
-    reset() {
-      this.x = rand(0, W); this.y = rand(0, H);
-      this.vx = rand(-0.18, 0.18); this.vy = rand(-0.18, 0.18);
-      this.size = rand(0.8, 2.2);
-      this.baseAlpha = rand(0.2, 0.7);
-      this.alpha = this.baseAlpha;
-      this.pulse = rand(0, Math.PI * 2);
-      this.pulseSpeed = rand(0.008, 0.02);
-      // gold or blue-white
-      this.isGold = Math.random() < 0.35;
-    }
-    update() {
-      this.x += this.vx; this.y += this.vy;
-      this.pulse += this.pulseSpeed;
-      this.alpha = this.baseAlpha + Math.sin(this.pulse) * 0.2;
-      // mouse repel
-      const dx = this.x - mouse.x, dy = this.y - mouse.y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < 100) {
-        this.x += (dx / dist) * 0.6;
-        this.y += (dy / dist) * 0.6;
-      }
-      if (this.x < 0) this.x = W; if (this.x > W) this.x = 0;
-      if (this.y < 0) this.y = H; if (this.y > H) this.y = 0;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = this.isGold
-        ? `rgba(212,175,90,${this.alpha})`
-        : `rgba(200,210,230,${this.alpha * 0.7})`;
-      ctx.fill();
-    }
+  function setTheme(t) {
+    html.setAttribute('data-theme', t);
+    localStorage.setItem('pgm-theme', t);
+    document.getElementById('optDark').classList.toggle('active', t === 'dark');
+    document.getElementById('optLight').classList.toggle('active', t === 'light');
   }
 
-  function initParticles() {
-    const count = Math.min(Math.floor((W * H) / 9000), 140);
-    particles = Array.from({ length: count }, () => new Particle());
-  }
-  initParticles();
+  const saved = localStorage.getItem('pgm-theme') || 'dark';
+  setTheme(saved);
 
-  // Draw connecting lines between nearby particles
-  function drawConnections() {
-    const maxDist = 130;
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < maxDist) {
-          const alpha = (1 - dist / maxDist) * 0.12;
-          const bothGold = particles[i].isGold && particles[j].isGold;
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = bothGold
-            ? `rgba(184,151,58,${alpha * 2})`
-            : `rgba(160,180,220,${alpha})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
-      }
-    }
-  }
+  // ── SCROLL REVEAL ──
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  // Animated shooting stars
-  let shootingStars = [];
-  function spawnShootingStar() {
-    shootingStars.push({
-      x: rand(W * 0.1, W * 0.9), y: rand(0, H * 0.4),
-      len: rand(60, 140), angle: rand(0.3, 0.6),
-      speed: rand(4, 8), alpha: 1, life: 0, maxLife: rand(30, 60)
-    });
-  }
-  setInterval(spawnShootingStar, 3500);
-
-  function loop() {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => { p.update(); p.draw(); });
-    drawConnections();
-
-    // Shooting stars
-    shootingStars = shootingStars.filter(s => s.life < s.maxLife);
-    shootingStars.forEach(s => {
-      s.life++;
-      s.x += Math.cos(s.angle) * s.speed;
-      s.y += Math.sin(s.angle) * s.speed;
-      s.alpha = 1 - s.life / s.maxLife;
-      const ex = s.x - Math.cos(s.angle) * s.len;
-      const ey = s.y - Math.sin(s.angle) * s.len;
-      const grad = ctx.createLinearGradient(ex, ey, s.x, s.y);
-      grad.addColorStop(0, 'rgba(184,151,58,0)');
-      grad.addColorStop(1, `rgba(212,175,90,${s.alpha * 0.8})`);
-      ctx.beginPath();
-      ctx.moveTo(ex, ey); ctx.lineTo(s.x, s.y);
-      ctx.strokeStyle = grad; ctx.lineWidth = 1.5; ctx.stroke();
-    });
-
-    requestAnimationFrame(loop);
-  }
-  loop();
-
-  document.getElementById('hero').addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
-  });
-  document.getElementById('hero').addEventListener('mouseleave', () => {
-    mouse.x = -999; mouse.y = -999;
-  });
-</script>
-<script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-  }, { threshold: 0.1 });
-  reveals.forEach(r => observer.observe(r));
-
-  // Navbar scroll effect
-  const nav = document.querySelector('nav');
+  // ── NAV SCROLL ──
+  const nav = document.getElementById('mainNav');
   window.addEventListener('scroll', () => {
-    nav.style.background = window.scrollY > 60
-      ? 'rgba(10,15,30,0.97)'
-      : 'rgba(10,15,30,0.85)';
-  });
+    nav.style.borderBottomColor = scrollY > 30 ? 'var(--border-s)' : 'var(--border)';
+  }, { passive: true });
 
-  // 3D tilt on app cards
-  document.querySelectorAll('.app-card, .testimonial-card, .stat-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      card.style.transform = `
-        perspective(800px)
-        rotateX(${-y * 6}deg)
-        rotateY(${x * 6}deg)
-        translateY(-6px)
-      `;
+  // ── FEATURED CARD TILT ──
+  document.querySelectorAll('.featured-card, .app-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(1000px) rotateX(${-y*3}deg) rotateY(${x*3}deg) translateY(-3px)`;
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
+    card.addEventListener('mouseleave', () => card.style.transform = '');
   });
 </script>
 </body>
